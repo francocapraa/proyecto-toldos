@@ -1,70 +1,111 @@
 <template>
   <div id="TablaCostos">
+    <div class="form-group">
+      <label>Buscar precio toldos por nombre: </label>
+
+      <select v-model="selected">
+        <option
+          v-for="toldo in costos"
+          :key="toldo.id_inc"
+          v-bind:value="{ toldo }"
+        >
+          {{ toldo.nombre_toldo }}
+        </option>
+      </select>
+      <button
+        class="btn btn-info ml-2"
+        @click="$emit('toldo-buscar', this.selected.toldo.nombre_toldo)"
+      >
+        Buscar
+      </button>
+    </div>
+        <div class="form-group">
+      <button
+        class="btn btn-info ml-2"
+        @click="$emit('cargar-datos')"
+      >
+        Limpiar
+      </button>
+    </div>
     <div v-if="!costos.length" class="alert alert-info" role="alert">
-      No se han agregado personas
+      No se han agregado toldos
     </div>
     <div class="table-responsive">
-    <table class="table" >
-      <thead>
-        <tr>
-          <th>Id toldo</th>
-          <th>Nombre toldo</th>
-          <th>Id producto</th>
-          <th>Descripcion producto</th>
-          <th>Precio unitario</th>
-          <th>Cantidad</th>
-          <th>acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="toldo in costos" :key="toldo.id_inc">
-          <td>
-            {{ toldo.id_toldo }}
-          </td>
-          <td>
-            {{ toldo.nombre_toldo }}
-          </td>
-          <td v-if="editando === toldo.id_inc">
-            <input
-              type="number"
-              class="form-control"
-              v-model="toldo.id_producto"
-            />
-          </td>
-          <td v-else>
-            {{ toldo.id_producto }}
-          </td>
-          <td>
-            {{ toldo.descripcion_producto }}
-          </td>
-          <td>
-            {{ toldo.precio_unitario }}
-          </td>
-          <td v-if="editando === toldo.id_inc">
-            <input
-              type="number"
-              step="any"
-              class="form-control"
-              v-model="toldo.cantidad"
-            />
-          </td>
-          <td v-else>
-            {{ toldo.cantidad }}
-          </td>
-          <td v-if="editando === toldo.id_inc">
-            <button class="btn btn-success" @click="guardartoldo(toldo)">💾 Guardar
-            </button>
-            <button class="btn btn-secondary ml-2" @click="cancelarEdicion(toldo)">❌ Cancelar
-            </button>
-          </td>
-          <td v-else>
-            <button class="btn btn-info ml-2" @click="editartoldo(toldo)">✏️ Editar</button>
-            <button class="btn btn-danger" @click="$emit('delete-toldo', toldo.id_inc)">🗑 Eliminar
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Id toldo</th>
+            <th>Nombre toldo</th>
+            <th>Id producto</th>
+            <th>Descripcion producto</th>
+            <th>Precio unitario</th>
+            <th>Cantidad</th>
+            <th>acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="toldo in costos" :key="toldo.id_inc">
+            <td>
+              {{ toldo.id_toldo }}
+            </td>
+            <td>
+              {{ toldo.nombre_toldo }}
+            </td>
+            <td v-if="editando === toldo.id_inc">
+              <input
+                type="number"
+                class="form-control"
+                v-model="toldo.id_producto"
+              />
+            </td>
+            <td v-else>
+              {{ toldo.id_producto }}
+            </td>
+            <td>
+              {{ toldo.descripcion_producto }}
+            </td>
+            <td>
+              {{ toldo.precio_unitario }}
+            </td>
+            <td v-if="editando === toldo.id_inc">
+              <input
+                type="number"
+                step="any"
+                class="form-control"
+                v-model="toldo.cantidad"
+              />
+            </td>
+            <td v-else>
+              {{ toldo.cantidad }}
+            </td>
+            <td v-if="editando === toldo.id_inc">
+              <button class="btn btn-success" @click="guardartoldo(toldo)">
+                💾 Guardar
+              </button>
+              <button
+                class="btn btn-secondary ml-2"
+                @click="cancelarEdicion(toldo)"
+              >
+                ❌ Cancelar
+              </button>
+            </td>
+            <td v-else>
+              <button class="btn btn-info ml-2" @click="editartoldo(toldo)">
+                ✏️ Editar
+              </button>
+              <button
+                class="btn btn-danger"
+                @click="$emit('delete-toldo', toldo.id_inc)"
+              >
+                🗑 Eliminar
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div v-if="selected" class="bg-info">
+    <h3>Precio del toldo: {{ precio }}</h3>
     </div>
   </div>
 </template>
@@ -73,6 +114,13 @@ export default {
   name: "TablaCostos",
   props: {
     costos: Array,
+    precio: Number,
+  },
+  data() {
+    return {
+      editando: null,
+      selected: "",
+    };
   },
   methods: {
     editartoldo(toldo) {
@@ -84,24 +132,15 @@ export default {
       this.editando = null;
     },
     guardartoldo(toldo) {
-      var cantid = toldo.cantidad.toString()
-      var id_po = toldo.id_producto.toString()
-      console.log(toldo.cantidad)
-      if (
-        !cantid.length ||
-        !id_po.length
-      ) {
+      var cantid = toldo.cantidad.toString();
+      var id_po = toldo.id_producto.toString();
+      console.log(toldo.cantidad);
+      if (!cantid.length || !id_po.length) {
         return;
       }
       this.$emit("actualizar-toldo", toldo.id_inc, toldo);
       this.editando = null;
-      }
-    
-  },
-  data() {
-    return {
-      editando: null,
-    };
+    },
   },
 };
 </script>

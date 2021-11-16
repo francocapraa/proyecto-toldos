@@ -1,8 +1,8 @@
 <template>
+<div class=".col-sm-6 .col-md-5 .offset-md-2 .col-lg-6 .offset-lg-0">
   <div id="FormularioCosto">
     <form @submit.prevent="enviarFormulario">
       <p>Agregar un costo a un toldo ya existente</p>
-      <div class="container">
           
           <div class="col-md-4">
             <label>Nombre del toldo: </label>              
@@ -79,8 +79,8 @@
             </div>
           </div>
         </div>
+            </form>
       </div>
-    </form>
   </div>
 </template>
 
@@ -96,11 +96,8 @@ export default {
       error: false,
       costos : [],
       toldo: {
-        id_toldo: "",
         nombre_toldo: "",
-        id_producto: "",
         descripcion_producto: "",
-        precio_unitario: "",
         cantidad: "",
       },
       selected:"",
@@ -121,7 +118,7 @@ export default {
       this.procesando = true;
       this.resetEstado();
       console.log(this.toldo);
-      this.$emit("add-toldo", this.toldo);
+      this.$emit("add-toldo-nuevo", this.toldo, this.selected, this.eleccion);
       this.$refs.id_toldo.focus();
       this.error = false;
       this.correcto = true;
@@ -130,8 +127,6 @@ export default {
         id_toldo: "",
         nombre_toldo: "",
         id_producto: "",
-        descripcion_producto: "",
-        precio_unitario: "",
         cantidad: "",
       };
     },

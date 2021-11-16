@@ -2,19 +2,23 @@
 <div>
     <div class="row">
       <div class="col-md-12">
+
         <h1>Toldos</h1>
       </div>
     </div>
     <div class="row">
       <div class="col-md-12">
         <div class="container">
-  <div class="row justify-content-center justify-content-md-start">
-        <formularioCosto  :costos="costos" @add-toldo="agregarToldo" />
+  <div class="container">
+        <formularioCosto  :costos="costos" @add-toldo-nuevo="agregarToldoexistente" />
         <formularioAgregartoldo :costos="costos" @add-toldo="agregarToldo"/>
         </div>
-        <tablaCostos :costos="costos" 
+        <div class="col-md-4">
+                  </div>
+        <tablaCostos :costos="costos" :precio="precio"
         @delete-toldo="eliminartoldo" 
-        @actualizar-toldo="actualizartoldo"/>
+        @actualizar-toldo="actualizartoldo" @toldo-buscar="seleccionData" @cargar-datos="getData"/>
+
         </div>
         </div>
       </div>
@@ -38,11 +42,14 @@ export default {
   data() {
     return {
       costos: [],
+      selected: "",
+      precio: "",
     }
   },
  //   },
     created() {
       this.getData();
+      this.getProductos();
       },
   // GET request using axios with error handling
   //const agent = new https.Agent({
@@ -58,7 +65,46 @@ export default {
 //
 // https://medium.com/@dtkatz/3-ways-to-fix-the-cors-error-and-how-access-control-allow-origin-works-d97d55946d9
 methods: {
-async agregarToldo(toldo) {
+async agregarToldo(toldo, selected) {
+  console.log(toldo)
+    console.log(selected.producto.id_producto)
+    toldo.id_producto = selected.producto.id_producto
+  try {
+      const response = await axios.post("http://localhost:5000/insertartoldo", toldo);
+      console.log(response)
+      var result =  response["data"]
+      var msg = result["mensaje"]
+      console.log(msg)
+          if ( result["mensaje"] == "Costo registrado."){
+              this.costos= [...this.costos, { ...toldo}];
+          }
+        } 
+  catch (error) {
+        console.log(error);
+      }
+
+},
+async seleccionData(nombre_toldo) {
+      try {
+        var link = "http://localhost:5000/precio/" + nombre_toldo
+        const response = await axios.get(link);
+        console.log(response.data)
+        this.costos = response.data["Toldo"]
+        this.precio = response.data["Precio"];
+        console.log(this.precio)
+      } catch (error) {
+        console.log(error);
+      }
+
+},
+
+
+
+async agregarToldoexistente(toldo, selected, eleccion) {
+  console.log(toldo)
+    console.log(selected.toldo.id_producto)
+    toldo.id_producto = selected.toldo.id_producto
+    toldo.id_toldo = eleccion.toldo.id_toldo
   try {
       const response = await axios.post("http://localhost:5000/insertartoldo", toldo);
       console.log(response)
@@ -113,7 +159,18 @@ async getData() {
         console.log(error);
       }
 
-}
+},
+
+async getProductos() {
+  try {
+        const response = await axios.get("http://localhost:5000/productos");
+        console.log(response.data)
+        this.productos = response.data["productos"];
+      } catch (error) {
+        console.log(error);
+      }
+},
+
 },
 }
 

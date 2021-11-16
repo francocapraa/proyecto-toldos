@@ -1,7 +1,7 @@
 <template>
     <div>
-        <h1>Bienvenido al centro de costos!</h1>
-        <div class="row">
+        <h1>¡Bienvenido al centro de costos!</h1>
+        <div class="row justify-content-between">
         <div class="col-md-4">
             <div class="form-group" >
                 <button  @click="anadir_toldo" class="btn btn-primary">Añadir toldo</button>
@@ -9,12 +9,7 @@
         </div>
         <div class="col-md-4">
             <div class="form-group">
-                <button class="btn btn-primary">Precio proveedores</button>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="form-group">
-                <button class="btn btn-primary">Ordenes</button>
+                <button @click="anadir_producto" class="btn btn-primary">Precio proveedores</button>
             </div>
         </div>
          </div>
@@ -34,6 +29,9 @@ export default {
             anadir_toldo(){
                 this.$router.push("toldos");
             },
+            anadir_producto(){
+                this.$router.push("proveedores")
+            }
 
         }
 }

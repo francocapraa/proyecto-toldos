@@ -1,4 +1,5 @@
 <template>
+<div class=".col-sm-6 .col-md-5 .col-lg-6">
   <div id="formularioAgregartoldo">
     <form @submit.prevent="enviarFormulario">
           <p>Comenzar la creacion de un nuevo toldo</p>
@@ -13,7 +14,7 @@
           
               <div class="col-md-4">
                       <div class="form-group">
-                          <label>Cantidad</label>
+                          <label>Id toldo</label>
                               <input v-model="toldo.id_toldo" type="number" class="form-control"/>
                       </div>
               </div>
@@ -21,8 +22,8 @@
                       <div class="form-group">
                           <label>Descripcion producto a agregar: </label>
               
-                              <select v-model="selected">                                  <option v-for="toldo in costos" :key="toldo.id_inc" v-bind:value="{toldo}">
-                                    {{ toldo.descripcion_producto }}
+                              <select v-model="selected"><option v-for="producto in productos" :key="producto.id_producto" v-bind:value="{producto}">
+                                    {{ producto.descripcion_producto }}
                                   </option>
                               </select>
                               
@@ -33,7 +34,7 @@
                   <div class="form-group">
                           <label>Id producto</label>
                               <div class="form-control">
-                      <p><span id="34" v-if="selected">{{ selected.toldo.id_producto }}</span></p>
+                      <p><span v-if="selected">{{ selected.producto.id_producto }}</span></p>
                   </div>
                   </div>
               </div>
@@ -42,7 +43,7 @@
                   <div class="form-group">
                     <label>Precio unitario</label>
                     <div class="form-control">
-                        <p><span v-if="selected">{{ selected.toldo.precio_unitario }}</span></p>
+                        <p><span v-if="selected">{{ selected.producto.precio_unitario }}</span></p>
                   </div>
                   </div>
               </div>
@@ -78,6 +79,7 @@
         </div>
     </form>
     </div>
+    </div>
 </template>
 
 <script>
@@ -91,12 +93,10 @@ export default {
       correcto: false,
       error: false,
       costos : [],
+      productos: [],
       toldo: {
         id_toldo: "",
         nombre_toldo: "",
-        id_producto: "",
-        descripcion_producto: "",
-        precio_unitario: "",
         cantidad: "",
       },
       selected:"",
@@ -104,6 +104,7 @@ export default {
   },
   mounted(){
        this.traer_data()
+       this.traer_prod()
        console.log(this.costos)
      },
   methods: {
@@ -112,11 +113,16 @@ export default {
       console.log(response.data)
       this.costos = response.data["toldos"]; 
      },
+     async traer_prod(){
+      let response = await axios.get("http://localhost:5000/productos")
+      console.log(response.data)
+      this.productos = response.data["productos"]; 
+     },
     enviarFormulario() {
       this.procesando = true;
       this.resetEstado();
       console.log(this.toldo);
-      this.$emit("add-toldo", this.toldo);
+      this.$emit("add-toldo", this.toldo, this.selected);
       this.$refs.id_toldo.focus();
       this.error = false;
       this.correcto = true;
@@ -125,8 +131,6 @@ export default {
         id_toldo: "",
         nombre_toldo: "",
         id_producto: "",
-        descripcion_producto: "",
-        precio_unitario: "",
         cantidad: "",
       };
     },

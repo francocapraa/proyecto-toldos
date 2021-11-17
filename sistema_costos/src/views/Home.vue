@@ -6,16 +6,24 @@
 
     <!-- Icon -->
     <div class="fadeIn first">
-      <img src="@/assets/toldos.png" id="icon" alt="User Icon" />
+     <img src="@/assets/toldos.png" id="icon" alt="User Icon" />
     </div>
 
     <!-- Login Form -->
-    <form v-on:submit.prevent="login">
-      <input type="text" id="login" class="fadeIn second" name="login" placeholder="usuario" v-model="usuario">
-      <input type="password" id="contrasena" class="fadeIn second" name="login" placeholder="contrasena" v-model="contrasena">
-      <input type="submit" class="fadeIn fourth" value="Log In">
-    </form>
 
+    <form v-on:submit.prevent="login">
+      <div class="form-group">
+    <label for="exampleInputEmail1">Ingresar usuario</label>
+    <input  type="text" class="form-control" id="login"  name="login" placeholder="usuario" v-model="usuario">
+  </div>
+  <div class="form-group">
+    <label for="exampleInputPassword1">Password</label>
+    <input type="password" class="form-control" id="contrasena" name="login" placeholder="contrasena" v-model="contrasena">
+  </div>
+  <button type="submit" class="btn btn-primary" value="Log In">Ingresar</button>
+ 
+    </form>
+    <br> 
     <div class="alert alert-danger" role="alert" v-if="error">
   {{error_msg}}
 </div>
@@ -178,7 +186,7 @@ input[type=button]:active, input[type=submit]:active, input[type=reset]:active  
   transform: scale(0.95);
 }
 
-input[type=text] {
+input[type=text], input[type=password] {
   background-color: #f6f6f6;
   border: none;
   color: #0d0d0d;

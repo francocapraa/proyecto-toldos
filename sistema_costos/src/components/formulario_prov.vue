@@ -3,7 +3,6 @@
 <div class=".col-sm-6 .col-md-5 .col-lg-6">
   <div id="formularioproducto">
     <form @submit.prevent="enviarFormularioproducto">
-          <p>Modificar/agregar producto</p>
               <div class="container">
                 <div class="row">
                   <div class="col-md-4">

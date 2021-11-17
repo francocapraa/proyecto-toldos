@@ -6,22 +6,17 @@
         <h1>Toldos</h1>
       </div>
     </div>
-    <div class="row">
       <div class="col-md-12">
         <div class="container">
-  <div class="container">
+  
         <formularioCosto  :costos="costos" @add-toldo-nuevo="agregarToldoexistente" />
         <formularioAgregartoldo :costos="costos" @add-toldo="agregarToldo"/>
-        </div>
-        <div class="col-md-4">
-                  </div>
         <tablaCostos :costos="costos" :precio="precio"
         @delete-toldo="eliminartoldo" 
         @actualizar-toldo="actualizartoldo" @toldo-buscar="seleccionData" @cargar-datos="getData"/>
 
         </div>
         </div>
-      </div>
 </div>
 </template>
 <script>

@@ -151,19 +151,6 @@ def eliminar_toldo(id_inc):
         return jsonify({'mensaje': "Error", 'exito': False})
 
 
-## Metodos put para tabla toldos
-
-@app.route('/modificartoldo/<id_inc>', methods=['PUT'])
-def modificar_toldo(id_inc):
-    try:
-        cursor = conexion.connection.cursor()
-        sql = "UPDATE toldos SET cantidad = '{1}',  id_producto = {'{2}' WHERE id_inc = '{0}'".format(id_inc, request.json["cantidad"], request.json["id_producto"])
-        cursor.execute(sql)
-        cursor.connection.commit()
-        return jsonify({"toldo modificado": id_inc})
-    except Exception as ex:
-        return jsonify({'mensaje': "Error", 'exito': False})
-
 
 
 ## Metodos get precio para tabla toldos
@@ -296,6 +283,7 @@ def registrar_producto():
 
 
 ## Metodos delete para tabla toldos
+
 @app.route('/eliminarproducto/<id_producto>', methods=['DELETE'])
 def eliminar_producto(id_producto):
     try:
@@ -306,6 +294,11 @@ def eliminar_producto(id_producto):
         return jsonify({"toldo eliminado": id_producto})
     except Exception as ex:
         return jsonify({'mensaje': "Error", 'exito': False})
+
+
+
+
+
 
 
 ## Metodos put para tabla producto
@@ -321,6 +314,24 @@ def modificar_producto(id_producto):
         return jsonify({"producto modificado": id_producto})
     except Exception as ex:
         return jsonify({'mensaje': "Error", 'exito': False})
+
+## Metodos put para tabla toldos
+
+@app.route('/modificartoldo/<id_inc>', methods=['PUT'])
+def modificar_toldo(id_inc):
+    try:
+        cursor = conexion.connection.cursor()
+        sql = "UPDATE toldos SET cantidad = '{1}',  id_producto = {'{2}' WHERE id_inc = '{0}'".format(id_inc, request.json["cantidad"], request.json["id_producto"])
+        cursor.execute(sql)
+        cursor.connection.commit()
+        return jsonify({"toldo modificado": id_inc})
+    except Exception as ex:
+        return jsonify({'mensaje': "Error", 'exito': False})
+
+
+
+
+
 
 
 

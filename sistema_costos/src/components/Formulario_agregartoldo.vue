@@ -1,89 +1,115 @@
 <template>
-<div class=".col-sm-6 .col-md-5 .col-lg-6">
   <div id="formularioAgregartoldo">
-    <form @submit.prevent="enviarFormulario">
-          <p>Comenzar la creacion de un nuevo toldo</p>
-              <div class="container">
-                  <div class="col-md-4">
-                      <div class="form-group">
-                          <label>Nombre del toldo</label>
-                              <input v-model="toldo.nombre_toldo" type="text" class="form-control"/>
-                      </div>
-                  </div>
-                  </div>
-          
-              <div class="col-md-4">
-                      <div class="form-group">
-                          <label>Id toldo</label>
-                              <input v-model="toldo.id_toldo" type="number" class="form-control"/>
-                      </div>
+    <form @submit.prevent="enviarFormulario" class="form-horizontal">
+      <div class="span6">
+        <fieldset>
+          <legend>Comenzar la creacion de un nuevo toldo</legend>
+          <div class="container">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>Nombre del toldo</label>
+                <input
+                  v-model="toldo.nombre_toldo"
+                  type="text"
+                  class="form-control"
+                />
               </div>
-                  <div class="col-md-4">
-                      <div class="form-group">
-                          <label>Descripcion producto a agregar: </label>
-              
-                              <select v-model="selected"><option v-for="producto in productos" :key="producto.id_producto" v-bind:value="{producto}">
-                                    {{ producto.descripcion_producto }}
-                                  </option>
-                              </select>
-                              
-                      </div>
-                  </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>Id toldo</label>
+                <input
+                  v-model="toldo.id_toldo"
+                  type="number"
+                  class="form-control"
+                />
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>Descripcion producto a agregar: </label>
 
-              <div class="col-md-4">
-                  <div class="form-group">
-                          <label>Id producto</label>
-                              <div class="form-control">
-                      <p><span v-if="selected">{{ selected.producto.id_producto }}</span></p>
-                  </div>
-                  </div>
+                <select v-model="selected">
+                  <option
+                    v-for="producto in productos"
+                    :key="producto.id_producto"
+                    v-bind:value="{ producto }"
+                  >
+                    {{ producto.descripcion_producto }}
+                  </option>
+                </select>
               </div>
+            </div>
 
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>Id producto</label>
+                <div class="form-control">
+                  <p>
+                    <span v-if="selected">{{
+                      selected.producto.id_producto
+                    }}</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>Precio unitario</label>
+                <div class="form-control">
+                  <p>
+                    <span v-if="selected">{{
+                      selected.producto.precio_unitario
+                    }}</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>Cantidad</label>
+                <input
+                  v-model="toldo.cantidad"
+                  type="number"
+                  step="any"
+                  class="form-control"
+                />
+              </div>
+            </div>
+            <div class="row">
               <div class="col-md-4">
-                  <div class="form-group">
-                    <label>Precio unitario</label>
-                    <div class="form-control">
-                        <p><span v-if="selected">{{ selected.producto.precio_unitario }}</span></p>
+                <div class="form-group">
+                  <button class="btn btn-primary">Añadir toldo</button>
+                </div>
+              </div>
+            </div>
+            <div class="container">
+              <div class="row">
+                <div class="col-md-12">
+                  <div
+                    v-if="error && procesando"
+                    class="alert alert-danger"
+                    role="alert"
+                  >
+                    Debes rellenar todos los campos!
                   </div>
+                  <div v-if="correcto" class="alert alert-success" role="alert">
+                    El costo ha sido agregado correctamente!
                   </div>
-              </div>
-          
-              <div class="col-md-4">
-                  <div class="form-group">
-                    <label>Cantidad</label>
-                      <input v-model="toldo.cantidad" type="number" step="any" class="form-control"/>
-            </div>
-          </div>
-        <div class="row">
-          <div class="col-md-4">
-            <div class="form-group">
-              <button class="btn btn-primary">Añadir toldo</button>
-            </div>
-          </div>
-        </div>
-        <div class="container">
-          <div class="row">
-            <div class="col-md-12">
-              <div
-                v-if="error && procesando"
-                class="alert alert-danger"
-                role="alert"
-              >
-                Debes rellenar todos los campos!
-              </div>
-              <div v-if="correcto" class="alert alert-success" role="alert">
-                El costo ha sido agregado correctamente!
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        </fieldset>
+      </div>
     </form>
-    </div>
-    </div>
+  </div>
 </template>
 
 <script>
-import axios from "axios"
+import axios from "axios";
 export default {
   name: "formularioAgregartoldo",
 
@@ -92,32 +118,32 @@ export default {
       procesando: false,
       correcto: false,
       error: false,
-      costos : [],
+      costos: [],
       productos: [],
       toldo: {
         id_toldo: "",
         nombre_toldo: "",
         cantidad: "",
       },
-      selected:"",
+      selected: "",
     };
   },
-  mounted(){
-       this.traer_data()
-       this.traer_prod()
-       console.log(this.costos)
-     },
+  mounted() {
+    this.traer_data();
+    this.traer_prod();
+    console.log(this.costos);
+  },
   methods: {
-    async traer_data(){
-      let response = await axios.get("http://localhost:5000/toldos")
-      console.log(response.data)
-      this.costos = response.data["toldos"]; 
-     },
-     async traer_prod(){
-      let response = await axios.get("http://localhost:5000/productos")
-      console.log(response.data)
-      this.productos = response.data["productos"]; 
-     },
+    async traer_data() {
+      let response = await axios.get("http://localhost:5000/toldos");
+      console.log(response.data);
+      this.costos = response.data["toldos"];
+    },
+    async traer_prod() {
+      let response = await axios.get("http://localhost:5000/productos");
+      console.log(response.data);
+      this.productos = response.data["productos"];
+    },
     enviarFormulario() {
       this.procesando = true;
       this.resetEstado();

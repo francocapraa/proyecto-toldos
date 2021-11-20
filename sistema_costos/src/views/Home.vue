@@ -1,5 +1,4 @@
 <template>
-    
 <div class="wrapper fadeInDown">
   <div id="formContent">
     <!-- Tabs Titles -->
@@ -29,7 +28,9 @@
 </div>
 
   </div>
+  
 </div>
+
 
 </template>
 
@@ -63,7 +64,8 @@ export default {
         this.error_msg = data.data.datos
       }
     })
-    }
+    },
+    
   }
 }
 </script>

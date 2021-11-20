@@ -159,7 +159,7 @@ def eliminar_toldo(id_inc):
 def get_toldo(nombre_toldo):
     try:
         cursor = conexion.connection.cursor()
-        sql = "SELECT toldos.id_toldo, toldos.nombre_toldo, toldos.id_producto, productos_proveedores.descripcion_producto, productos_proveedores.precio_unitario, toldos.cantidad, toldos.id_inc FROM toldos INNER JOIN productos_proveedores ON toldos.id_producto = productos_proveedores.id_producto WHERE toldos.nombre_toldo = '{0}';".format(nombre_toldo)
+        sql = "SELECT toldos.id_toldo, toldos.nombre_toldo, toldos.id_producto, productos_proveedores.descripcion_producto, productos_proveedores.precio_unitario, toldos.cantidad, toldos.id_inc FROM toldos INNER JOIN productos_proveedores ON toldos.id_producto = productos_proveedores.id_producto WHERE toldos.nombre_toldo LIKE '%{0}%';".format(nombre_toldo)
         print(sql)
         cursor.execute(sql)
         datos = cursor.fetchall()
@@ -178,12 +178,15 @@ def get_toldo(nombre_toldo):
 
 def buscar_precio(componentes):
     precio_toldo = 0
-    for n in componentes:
-        precio = float(n["precio_unitario"])
-        cantidad = float(n["cantidad"])
-        resultado = precio * cantidad
-        precio_toldo = precio_toldo + resultado
-    return precio_toldo
+    try:
+        for n in componentes:
+            precio = float(n["precio_unitario"])
+            cantidad = float(n["cantidad"])
+            resultado = precio * cantidad
+            precio_toldo = precio_toldo + resultado
+        return precio_toldo
+    except:
+        return precio_toldo
     
 ### metodos get para sacar productos por proveedor y po nombre
 

@@ -42,7 +42,6 @@
 
 export default {
         name:"Lobby",
-
         components: {
 
         },
@@ -52,9 +51,8 @@ export default {
             },
             anadir_producto(){
                 this.$router.push("proveedores")
-            }
-
-        }
+            },
+}
 }
 </script>
 <style scoped>

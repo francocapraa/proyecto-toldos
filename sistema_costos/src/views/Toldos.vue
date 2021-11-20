@@ -3,14 +3,23 @@
     <div class="row">
       <div class="col-md-12">
 
-        <h1>Toldos</h1>
+        <h1 class="font-weight-bold">Toldos</h1>
+        <br>
+        <br>
+
       </div>
     </div>
       <div class="col-md-12">
         <div class="container">
-  
+          <br>
         <formularioCosto  :costos="costos" @add-toldo-nuevo="agregarToldoexistente" />
+        <br>
+
         <formularioAgregartoldo :costos="costos" @add-toldo="agregarToldo"/>
+        <br>
+        <br>
+        <br>
+
         <tablaCostos :costos="costos" :precio="precio"
         @delete-toldo="eliminartoldo" 
         @actualizar-toldo="actualizartoldo" @toldo-buscar="seleccionData" @cargar-datos="getData"/>
@@ -72,7 +81,9 @@ async agregarToldo(toldo, selected) {
       console.log(msg)
           if ( result["mensaje"] == "Costo registrado."){
               this.costos= [...this.costos, { ...toldo}];
+              this.correcto = true;
           }
+          
         } 
   catch (error) {
         console.log(error);
@@ -97,9 +108,10 @@ async seleccionData(nombre_toldo) {
 
 async agregarToldoexistente(toldo, selected, eleccion) {
   console.log(toldo)
-    console.log(selected.toldo.id_producto)
-    toldo.id_producto = selected.toldo.id_producto
+    console.log(selected.producto.id_producto)
+    toldo.id_producto = selected.producto.id_producto
     toldo.id_toldo = eleccion.toldo.id_toldo
+    toldo.nombre_toldo = eleccion.toldo.nombre_toldo
   try {
       const response = await axios.post("http://localhost:5000/insertartoldo", toldo);
       console.log(response)
@@ -108,6 +120,7 @@ async agregarToldoexistente(toldo, selected, eleccion) {
       console.log(msg)
           if ( result["mensaje"] == "Costo registrado."){
               this.costos= [...this.costos, { ...toldo}];
+              this.correcto = true
           }
         } 
   catch (error) {

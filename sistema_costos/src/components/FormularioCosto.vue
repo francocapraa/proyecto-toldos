@@ -1,11 +1,10 @@
 <template>
-<div class=".col-sm-6 .col-md-5 .offset-md-2 .col-lg-6 .offset-lg-0">
   <div id="FormularioCosto">
-    <form @submit.prevent="enviarFormulario">
-      <p>Agregar un costo a un toldo ya existente</p>
+    <form @submit.prevent="enviarFormulario" class="form-row align-items-center">
+      <legend> Agregar un costo a un toldo ya existente</legend>
           
           <div class="col-md-4">
-            <label>Nombre del toldo: </label>              
+            <label>Nombre del toldo: </label>             
             <select v-model="eleccion">
               <option v-for="toldo in costos" :key="toldo.id_inc" v-bind:value="{toldo}">
                 {{ toldo.nombre_toldo }}
@@ -15,7 +14,7 @@
           <div class="col-md-4">
             <div class="form-group">
               <label>Id toldo</label>
-              <div class="form-control">
+              <div class="form-control mb-2 mr-sm-2">
               <p><span v-if="eleccion">{{ eleccion.toldo.id_toldo }}</span></p>
               </div>
             </div>
@@ -23,8 +22,11 @@
                     <div class="col-md-4">
             <label>Descripcion producto a agregar: </label>              
             <select v-model="selected">
-              <option v-for="toldo in costos" :key="toldo.id_inc" v-bind:value="{toldo}">
-                {{ toldo.descripcion_producto }}
+              <option                     v-for="producto in productos"
+                    :key="producto.id_producto"
+                    v-bind:value="{ producto }"
+                  >
+                    {{ producto.descripcion_producto }}
               </option>
             </select>
               </div>
@@ -32,8 +34,8 @@
           <div class="col-md-4">
             <div class="form-group">
               <label>Id producto</label>
-              <div class="form-control">
-              <p><span v-if="selected">{{ selected.toldo.id_producto }}</span></p>
+              <div class="form-control mb-2 mr-sm-2">
+              <p><span v-if="selected">{{ selected.producto.id_producto }}</span></p>
             </div>
             </div>
           </div>
@@ -41,7 +43,7 @@
             <div class="form-group">
               <label>Precio unitario</label>
               <div class="form-control">
-              <p><span v-if="selected">{{ selected.toldo.precio_unitario }}</span></p>
+              <p><span v-if="selected">{{ selected.producto.precio_unitario }}</span></p>
             </div>
             </div>
           </div>
@@ -56,13 +58,7 @@
               />
             </div>
           </div>
-        <div class="row">
-          <div class="col-md-4">
-            <div class="form-group">
-              <button class="btn btn-primary">Añadir toldo</button>
-            </div>
-          </div>
-        </div>
+              <button type="button" class="btn btn-secondary btn-lg btn-block" @click="enviarFormulario">Añadir toldo</button>
         <div class="container">
           <div class="row">
             <div class="col-md-12">
@@ -81,7 +77,6 @@
         </div>
             </form>
       </div>
-  </div>
 </template>
 
 <script>
@@ -92,20 +87,23 @@ export default {
   data() {
     return {
       procesando: false,
-      correcto: false,
       error: false,
+      correcto: false,
       costos : [],
+      productos: [],
       toldo: {
         nombre_toldo: "",
         descripcion_producto: "",
         cantidad: "",
       },
-      selected:"",
-      eleccion:"",
+      selected:null,
+      eleccion:null,
+      ingreso: false
     };
   },
   mounted(){
        this.traer_data()
+       this.traer_produ()
        console.log(this.costos)
      },
   methods: {
@@ -114,14 +112,18 @@ export default {
       console.log(response.data)
       this.costos = response.data["toldos"]; 
      },
+      async traer_produ() {
+      let response = await axios.get("http://localhost:5000/productos");
+      console.log(response.data);
+      this.productos = response.data["productos"];
+    },
     enviarFormulario() {
       this.procesando = true;
-      this.resetEstado();
       console.log(this.toldo);
-      this.$emit("add-toldo-nuevo", this.toldo, this.selected, this.eleccion);
-      this.$refs.id_toldo.focus();
+            console.log(this.selected);
+                  console.log(this.eleccion);
+      this.$emit("add-toldo-nuevo", this.toldo, this.selected, this.eleccion)
       this.error = false;
-      this.correcto = true;
       this.procesando = false;
       this.toldo = {
         id_toldo: "",
@@ -129,35 +131,38 @@ export default {
         id_producto: "",
         cantidad: "",
       };
+            this.resetEstado();
+            console.log(this.ingreso)
     },
     resetEstado() {
-      this.correcto = false;
       this.error = false;
+      this.selected = null;
+      this.eleccion = null
     },
   },
   computed: {
     id_toldoInvalido() {
-      var id_toldo = this.costo.id_toldo.toString();
+      var id_toldo = this.toldo.id_toldo.toString();
       return id_toldo.length < 1;
     },
     nombre_toldoInvalido() {
-      var nombre_toldo = this.costo.nombre_toldo.toString();
+      var nombre_toldo = this.toldo.nombre_toldo.toString();
       return nombre_toldo.length < 1;
     },
     id_productoInvalido() {
-      var id_producto = this.costo.id_producto.toString();
+      var id_producto = this.toldo.id_producto.toString();
       return id_producto.length < 1;
     },
     descripcion_productoInvalido() {
-      var descripcion_producto = this.costo.descripcion_producto.toString();
+      var descripcion_producto = this.toldo.descripcion_producto.toString();
       return descripcion_producto.length < 1;
     },
     precio_unitarioInvalido() {
-      var precio_unitario = this.costo.precio_unitario.toString();
+      var precio_unitario = this.toldo.precio_unitario.toString();
       return precio_unitario.length < 1;
     },
     cantidadInvalido() {
-      var cantidad = this.costo.cantidad.toString();
+      var cantidad = this.toldo.cantidad.toString();
       return cantidad.length < 1;
     },
   },

@@ -19,43 +19,26 @@
         Buscar
       </button>
     </div>
+    <form class="form-inline my-2 my-lg-0">
+      <input
+        class="form-control mr-sm-2 buscador"
+        type="search"
+        placeholder="Buscar por nombre"
+        aria-label="Search"
+        v-model="buscador"
+        @keyup="buscar_"
+      />
+    </form>
         <div class="form-group">
       <button
         class="btn btn-info ml-2"
-        @click="$emit('limpiar-datos')"
-      >
-        Limpiar
-      </button>
-    </div>
-    <div class="form-group">
-      <label>Buscar por descripcion: </label>
-
-      <select v-model="nombre">
-        <option
-          v-for="producto in productos"
-          :key="producto.id_producto"
-          v-bind:value="{ producto }"
-        >
-          {{ producto.descripcion_producto }}
-        </option>
-      </select>
-      <button
-        class="btn btn-info ml-2"
-        @click="$emit('producto-buscar', this.selected.producto.descripcion_producto)"
-      >
-        Buscar
-      </button>
-    </div>
-        <div class="form-group">
-      <button
-        class="btn btn-info ml-2"
-        @click="$emit('limpiar-datos')"
+        @click="limpiar_datos"
       >
         Limpiar
       </button>
     </div>
     <div v-if="!productos.length" class="alert alert-info" role="alert">
-      No se han agregado personas
+      No hay productos que coincidan con la busqueda
     </div>
     <div class="table-responsive">
     <table class="table" >
@@ -70,7 +53,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="producto in productos" :key="producto.id_producto">
+        <tr v-for="producto in datosPaginados" :key="producto.id_producto">
         <td>{{ producto.id_producto }}</td>
           <td v-if="editando === producto.id_producto">
            <input
@@ -127,6 +110,21 @@
         </tr>
       </tbody>
     </table>
+          <nav aria-label="Page navigation example">
+          <ul class="pagination">
+            <li class="page-item" v-on:click="getPreaviousPage()">
+              <a class="page-link" href="#">Previous</a>
+            </li>
+            <li
+              v-for="pagina in totalPaginas()"
+              :key="pagina"
+              v-on:click="getDataPagina(pagina)"
+              class="page-item" v-bind:class="isActive(pagina)">
+              <a class="page-link" href="#">{{ pagina }}</a>
+            </li>
+            <li class="page-item"  v-on:click="getNextPage()"><a class="page-link" href="#">Next</a></li>
+          </ul>
+        </nav>
     </div>
   </div>
 </template>
@@ -157,13 +155,64 @@ export default {
       }
       this.$emit("actualizar-producto", producto.id_producto, producto);
       this.editando = null;
+      },
+      buscar_productos() {
+      this.$emit("producto-buscar", this.buscador);
+    },
+      buscar_() {
+      clearTimeout(this.setTimeoutbuscador);
+      this.setTimeoutbuscador = setTimeout(this.buscar_productos, 460);
+    },
+    totalPaginas() {
+      return Math.ceil(this.productos.length / this.elementosPorPagina);
+    },
+    getDataPagina(noPagina) {
+      this.datosPaginados = noPagina;
+      let ini = (noPagina * this.elementosPorPagina) - this.elementosPorPagina;
+      let fin = (noPagina * this.elementosPorPagina);
+      this.datosPaginados = this.productos.slice(ini, fin);
+    },
+
+    getPreaviousPage(){
+      if(this.paginaActual > 1){
+        this.paginaActual--;
+    }
+    this.getDataPagina(this.paginaActual);
+    },
+    getNextPage(){
+      if(this.paginaActual < this.totalPaginas()){
+        this.paginaActual++;
+    }
+    this.getDataPagina(this.paginaActual);
+    },
+
+    isActive(noPagina){
+      if(noPagina === this.PaginaActual){
+        return "active";
       }
+      else{
+        return "";
+      }
+    },
+    limpiar_datos(){
+      this.$emit('limpiar-datos')
+      this.buscador = "",
+      this.selected = ""
+    }
     
   },
   data() {
     return {
       editando: null,
+       buscador: "",
+      setTimeoutbuscador: "",
+      elementosPorPagina: 3,
+      datosPaginados: [],
+      paginaActual:1
     };
+  },
+  mounted(){
+    this.getDataPagina(1);
   },
 };
 </script>

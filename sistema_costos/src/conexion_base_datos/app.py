@@ -107,6 +107,7 @@ def buscar_toldo_nombre(id_toldo, nombre_toldo):
         sql = "SELECT nombre_toldo FROM toldos WHERE id_toldo = '{0}'".format(id_toldo)
         cursor.execute(sql)
         datos = cursor.fetchone()
+        print(datos)
         print(nombre_toldo)
         if datos != None:
             print(datos)
@@ -115,7 +116,12 @@ def buscar_toldo_nombre(id_toldo, nombre_toldo):
             else:
                  return "el nombre no corresponde"
         else:
-            return jsonify({"exito":True})
+            cursor = conexion.connection.cursor()
+            sql = "SELECT * FROM toldos where nombre_toldo = {0}".format(nombre_toldo)
+            cursor.execute(sql)
+            data = cursor.fetchone()
+            if data == None:
+                return jsonify({"exito": True})
     except Exception as ex:
         raise ex
 
@@ -171,7 +177,7 @@ def get_toldo(nombre_toldo):
             componentes.append(fila)
         print(componentes)
         precio = buscar_precio(componentes)
-        return jsonify({"Toldo": componentes, "Precio": precio})
+        return jsonify({"Toldo": componentes, "Precio": precio, "mensaje": "existe"})
     except Exception as ex:
         return jsonify({'mensaje': "Error", 'exito': False})
 
@@ -334,7 +340,35 @@ def modificar_toldo(id_inc):
 
 
 
+@app.route('/producto/<descripcion_producto>', methods=['GET'])
+def producto_descripcion(descripcion_producto):
+    try:
+        cursor = conexion.connection.cursor()
+        sql = "SELECT * from productos_proveedores where descripcion_producto = {0}".format(descripcion_producto)
+        cursor.execute(sql)
+        datos = cursor.fetchall()
+        productos = []
+        for fila in datos:
+            if len(fila)>1:
+                productos.append(fila)
+        if len(productos>0):
+            return jsonify({"producto": "existe"})
+    
+    except Exception as ex:
+        return jsonify({'mensaje': "Error", 'exito': False})
 
+def buscar_producto(descripcion_producto, proveedor):
+    try:
+        cursor = conexion.connection.cursor()
+        sql = "SELECT * FROM productos_proveedores WHERE descripcion_producto = '{0}' and proveedor = '{1}'".format(descripcion_producto, proveedor)
+        cursor.execute(sql)
+        datos = cursor.fetchone()
+        if datos != None:
+            return jsonify({"exito": True})
+        else:
+            return None
+    except Exception as ex:
+        raise ex
 
 
 

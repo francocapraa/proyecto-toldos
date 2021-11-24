@@ -3,6 +3,9 @@
 <div class=".col-sm-6 .col-md-5 .col-lg-6">
   <div id="formularioproducto">
     <form @submit.prevent="enviarFormularioproducto">
+      <br>
+      <br>
+      <legend>Agregar un nuevo producto</legend>
               <div class="container">
                 <div class="row">
                   <div class="col-md-4">
@@ -31,13 +34,9 @@
                       <input v-model="producto.Calificacion" type="text" class="form-control"/>
             </div>
           </div>
-        <div class="row">
-          <div class="col-md-4">
-            <div class="form-group">
-              <button class="btn btn-primary">Añadir producto</button>
-            </div>
-          </div>
-        </div>
+         
+              <button type="button" class="btn btn-secondary btn-lg btn-block"  @click="enviarFormularioproducto">Añadir producto</button>
+            
         <div class="container">
           <div class="row">
             <div class="col-md-12">
@@ -95,9 +94,8 @@ export default {
       this.resetEstado();
       console.log(this.producto);
       this.$emit("add-producto", this.producto);
-      this.$refs.descripcion_producto.focus();
+      this.verificar_existencia(this.producto.descripcion_producto)
       this.error = false;
-      this.correcto = true;
       this.procesando = false;
       this.producto = {
         descripcion_producto: "",
@@ -106,6 +104,22 @@ export default {
         proveedor:"",
       };
     },
+    async verificar_existencia(descripcion_producto){
+      try {
+        var link = "http://localhost:5000/producto/" + descripcion_producto
+        const response = await axios.get(link);
+        console.log(response.data["Productos"], "iji")
+        if (response.data["Productos"].length > 0){
+          this.correcto = true
+        }
+        else{
+          this.correcto = false
+        }
+      } catch (error) {
+        console.log(error);
+      }
+
+},
     resetEstado() {
       this.correcto = false;
       this.error = false;

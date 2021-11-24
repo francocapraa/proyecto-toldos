@@ -8,13 +8,13 @@
     <div class="row">
       <div class="col-md-12">
         <div class="container">
-        <formularioproducto  :productos="productos" @add-producto="agregarProducto" />
-        <tablaProveedores :productos="productos" 
+                <tablaProveedores :productos="productos" 
         @delete-producto="eliminarproducto" 
         @actualizar-producto="actualizarproducto"
         @proveedor-buscar="proveedor_buscar"
         @producto-buscar="producto_buscar"
         @limpiar-datos="getData"/>
+        <formularioproducto  :productos="productos" @add-producto="agregarProducto" />
         </div>
         </div>
       </div>

@@ -38,8 +38,6 @@
 import axios from "axios"
 export default {
   name: 'Home',
-  components: {
-  },
   data() {
     return {
       usuario: "",
@@ -49,7 +47,7 @@ export default {
     }
   },
   methods:{
-    login(){
+        login(){
       let json = {
         "usuario": this.usuario,
         "contrasena": this.contrasena
@@ -65,7 +63,20 @@ export default {
       }
     })
     },
-    
+/*const auth = getAuth();
+signInWithEmailAndPassword(auth, this.usuario, this.contrasena)
+  .then((userCredential) => {
+    // Signed in
+    const user = userCredential.user;
+    alert("usuario conectado")
+    // ...
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    console.log(errorCode)
+    const errorMessage = error.message;
+  });
+    }*/
   }
 }
 </script>

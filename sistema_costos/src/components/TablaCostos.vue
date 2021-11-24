@@ -168,6 +168,7 @@ export default {
       return Math.ceil(this.costos.length / this.elementosPorPagina);
     },
     getDataPagina(noPagina) {
+      this.paginaActual = noPagina;
       this.datosPaginados = [];
       let ini = (noPagina * this.elementosPorPagina) - this.elementosPorPagina;
       let fin = (noPagina * this.elementosPorPagina);

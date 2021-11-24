@@ -1,0 +1,36 @@
+{
+  "name": "vue-proyecto-final",
+  "version": "1.0.0",
+  "description": "",
+  "main": "vue.config.js",
+  "dependencies": {
+    "datatables.net": "^1.11.3",
+    "datatables.net-dt": "^1.11.3",
+    "firebase": "^9.5.0",
+    "jquery": "^3.6.0",
+    "vue": "^2.6.14",
+    "vue-bootstrap-table2": "^1.1.8",
+    "vuex": "^3.6.2"
+  },
+  "devDependencies": {
+    "eslint": "^8.3.0",
+    "eslint-plugin-decorator-position": "^4.0.1",
+    "eslint-plugin-vue": "^8.1.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FranciscoBa2/proyecto-toldos.git"
+  },
+  "keywords": [
+    "toldo"
+  ],
+  "author": "francisco",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FranciscoBa2/proyecto-toldos/issues"
+  },
+  "homepage": "https://github.com/FranciscoBa2/proyecto-toldos#readme"
+}

@@ -98,7 +98,6 @@ export default {
       },
       selected:null,
       eleccion:null,
-      ingreso: false
     };
   },
   mounted(){
@@ -118,27 +117,41 @@ export default {
       this.productos = response.data["productos"];
     },
     enviarFormulario() {
+            console.log(this.toldo.nombre_toldo, "hola")
       this.procesando = true;
-      console.log(this.toldo);
-            console.log(this.selected);
-                  console.log(this.eleccion);
       this.$emit("add-toldo-nuevo", this.toldo, this.selected, this.eleccion)
       this.error = false;
       this.procesando = false;
+      this.verificar_existencia(this.toldo.nombre_toldo)
       this.toldo = {
         id_toldo: "",
         nombre_toldo: "",
         id_producto: "",
         cantidad: "",
       };
-            this.resetEstado();
-            console.log(this.ingreso)
+      this.resetEstado();
     },
     resetEstado() {
       this.error = false;
       this.selected = null;
       this.eleccion = null
     },
+    async verificar_existencia(nombre_toldo){
+      try {
+        var link = "http://localhost:5000/precio/" + nombre_toldo
+        const response = await axios.get(link);
+        console.log(response.data["Toldo"].length, "hola")
+        if (response.data["Toldo"].length > 0){
+          this.correcto = true
+        }
+        else{
+          this.correcto = false
+        }
+      } catch (error) {
+        console.log(error);
+      }
+
+},
   },
   computed: {
     id_toldoInvalido() {

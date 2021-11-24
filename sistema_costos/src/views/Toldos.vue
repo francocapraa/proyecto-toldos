@@ -9,21 +9,17 @@
 
       </div>
     </div>
+
       <div class="col-md-12">
         <div class="container">
+                 <tablaCostos :costos="costos" :precio="precio"
+        @delete-toldo="eliminartoldo" 
+        @actualizar-toldo="actualizartoldo" @toldo-buscar="seleccionData" @cargar-datos="getData"/>
           <br>
         <formularioCosto  :costos="costos" @add-toldo-nuevo="agregarToldoexistente" />
         <br>
 
         <formularioAgregartoldo :costos="costos" @add-toldo="agregarToldo"/>
-        <br>
-        <br>
-        <br>
-
-        <tablaCostos :costos="costos" :precio="precio"
-        @delete-toldo="eliminartoldo" 
-        @actualizar-toldo="actualizartoldo" @toldo-buscar="seleccionData" @cargar-datos="getData"/>
-
         </div>
         </div>
 </div>

@@ -1,9 +1,10 @@
-/* import Vue from "vue";
+/*
+import Vue from "vue";
 import Vuex from "vuex";
-
+import axios from "axios"
 Vue.use(Vuex);
-
-const store = new Vuex.Store({
+*/
+/*const store = new Vuex.Store({
   state: {
     users: [],
     username: null,
@@ -17,7 +18,7 @@ const store = new Vuex.Store({
     doLogin(state, username, contrasena) {
       state.auth = true;
       state.username = username;
-      state.contrasena = contrasena
+      state.contrasena = contrasena;
     },
     doLogout(state) {
       state.auth = false;
@@ -66,7 +67,8 @@ const store = new Vuex.Store({
     }
   }
 });
-
+/*
 export default store;
 
-store.dispatch("setUsers"); */
+store.dispatch("setUsers"); 
+*/

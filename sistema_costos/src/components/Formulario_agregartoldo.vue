@@ -133,18 +133,17 @@ export default {
   methods: {
     async traer_data() {
       let response = await axios.get("http://localhost:5000/toldos");
-      console.log(response.data);
       this.costos = response.data["toldos"];
     },
     async traer_prod() {
       let response = await axios.get("http://localhost:5000/productos");
-      console.log(response.data);
       this.productos = response.data["productos"];
     },
     enviarFormulario() {
       this.procesando = true;
-      this.resetEstado();
+      console.log(this.toldo, this.selected, "tyler")
       this.$emit("add-toldo", this.toldo, this.selected);
+      this.verificar_existencia(this.toldo.nombre_toldo)
       this.error = false;
       this.procesando = false;
       this.toldo = {
@@ -154,11 +153,30 @@ export default {
         cantidad: "",
       };
       this.selected = "",
-      this.eleccion = ""
+      this.eleccion = "",
+      this.resetEstado();
+      
     },
     resetEstado() {
       this.error = false;
     },
+    async verificar_existencia(nombre_toldo){
+      try {
+
+        var link = "http://localhost:5000/precio/" + nombre_toldo
+        const response = await axios.get(link);
+        console.log(response.data["Toldo"].length, "hokwdqio")
+        if (response.data["Toldo"].length > 0){
+          this.correcto = true
+        }
+        else{
+          this.correcto = false
+        }
+      } catch (error) {
+        console.log(error);
+      }
+
+},
   },
   computed: {
     id_toldoInvalido() {
@@ -185,6 +203,7 @@ export default {
       var cantidad = this.toldo.cantidad.toString();
       return cantidad.length < 1;
     },
+
   },
 };
 </script>

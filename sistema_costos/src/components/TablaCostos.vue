@@ -189,12 +189,7 @@ export default {
     },
 
     isActive(noPagina){
-      if(noPagina === this.PaginaActual){
-        return "active";
-      }
-      else{
-        return "";
-      }
+      return noPagina == this.paginaActual ? "active":""
     }
   },
 };

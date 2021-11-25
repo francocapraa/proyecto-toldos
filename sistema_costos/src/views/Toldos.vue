@@ -2,10 +2,8 @@
 <div>
     <div class="row">
       <div class="col-md-12">
-
+        <br>
         <h1 class="font-weight-bold">Toldos</h1>
-        <br>
-        <br>
 
       </div>
     </div>
@@ -66,9 +64,9 @@ export default {
 // https://medium.com/@dtkatz/3-ways-to-fix-the-cors-error-and-how-access-control-allow-origin-works-d97d55946d9
 methods: {
 async agregarToldo(toldo, selected) {
-  console.log(toldo)
     console.log(selected.producto.id_producto)
     toldo.id_producto = selected.producto.id_producto
+    console.log(toldo, "igjiorjporijeo")
   try {
       const response = await axios.post("http://localhost:5000/insertartoldo", toldo);
       console.log(response)
@@ -103,11 +101,11 @@ async seleccionData(nombre_toldo) {
 
 
 async agregarToldoexistente(toldo, selected, eleccion) {
-  console.log(toldo)
     console.log(selected.producto.id_producto)
     toldo.id_producto = selected.producto.id_producto
     toldo.id_toldo = eleccion.toldo.id_toldo
     toldo.nombre_toldo = eleccion.toldo.nombre_toldo
+    console.log(toldo, "oewfhoifjwfoi")
   try {
       const response = await axios.post("http://localhost:5000/insertartoldo", toldo);
       console.log(response)

@@ -1,7 +1,7 @@
 <template>
   <div id="FormularioCosto">
     <form @submit.prevent="enviarFormulario" class="form-row align-items-center">
-      <legend> Agregar un costo a un toldo ya existente</legend>
+      <legend class="font-weight-bold"> Agregar un costo a un toldo ya existente</legend>
           
           <div class="col-md-4">
             <label>Nombre del toldo: </label>             
@@ -122,7 +122,8 @@ export default {
       this.$emit("add-toldo-nuevo", this.toldo, this.selected, this.eleccion)
       this.error = false;
       this.procesando = false;
-      this.verificar_existencia(this.toldo.nombre_toldo)
+      //this.verificar_existencia(this.toldo.nombre_toldo)
+      this.correcto = true
       this.toldo = {
         id_toldo: "",
         nombre_toldo: "",
@@ -136,9 +137,9 @@ export default {
       this.selected = null;
       this.eleccion = null
     },
-    async verificar_existencia(nombre_toldo){
+   /* async verificar_existencia(nombre_toldo){
       try {
-        var link = "http://localhost:5000/precio/" + nombre_toldo
+        var link = "http://localhost:5000/toldo/" + nombre_toldo
         const response = await axios.get(link);
         console.log(response.data["Toldo"].length, "hola")
         if (response.data["Toldo"].length > 0){
@@ -151,7 +152,7 @@ export default {
         console.log(error);
       }
 
-},
+},*/
   },
   computed: {
     id_toldoInvalido() {

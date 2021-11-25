@@ -5,7 +5,7 @@
     <form @submit.prevent="enviarFormularioproducto">
       <br>
       <br>
-      <legend>Agregar un nuevo producto</legend>
+      <legend class="font-weight-bold">Agregar un nuevo producto</legend>
               <div class="container">
                 <div class="row">
                   <div class="col-md-4">
@@ -94,9 +94,10 @@ export default {
       this.resetEstado();
       console.log(this.producto);
       this.$emit("add-producto", this.producto);
-      this.verificar_existencia(this.producto.descripcion_producto)
+      
       this.error = false;
       this.procesando = false;
+      this.verificar_existencia(this.producto.descripcion_producto);
       this.producto = {
         descripcion_producto: "",
         precio_unitario: "",

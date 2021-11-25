@@ -1,7 +1,6 @@
 <template>
-   <div class="bueno">
+<div>
         <div class="background">
-          <a href="#" @click="onLogout">Logout</a>
         <h1>¡Bienvenido al centro de costos!</h1>
         <div class="row justify-content-between">
         <div class="col-md-4">
@@ -15,7 +14,12 @@
             </div>
         </div>
     </div>
-    </div>
+    <br>
+    <br>
+              <div class="form-group">
+                <button @click="onLogout" class="btn btn-secondary">Logout</button>
+            </div>
+     </div>
     <footer class="bg-dark text-center text-white">
   <!-- Grid container -->
   <div class="container p-4">
@@ -49,7 +53,6 @@
   <!-- Copyright -->
 </footer>
     </div>
-    
 
 </template>
 

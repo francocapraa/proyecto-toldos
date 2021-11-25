@@ -2,7 +2,9 @@
 <div>
     <div class="row">
       <div class="col-md-12">
-        <h1>Toldos</h1>
+        <br>
+        <br>
+        <h1 class="font-weight-bold">Proveedores</h1>
       </div>
     </div>
     <div class="row">

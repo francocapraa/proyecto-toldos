@@ -1,7 +1,7 @@
 <template>
   <div id="formularioAgregartoldo">
     <form @submit.prevent="enviarFormulario" class="form-row align-items-center">
-          <legend>Comenzar la creacion de un nuevo toldo</legend>
+          <legend class="font-weight-bold">Comenzar la creacion de un nuevo toldo</legend>
             <div class="col-md-4">
               <div class="form-group">
                 <label>Nombre del toldo</label>
@@ -143,7 +143,8 @@ export default {
       this.procesando = true;
       console.log(this.toldo, this.selected, "tyler")
       this.$emit("add-toldo", this.toldo, this.selected);
-      this.verificar_existencia(this.toldo.nombre_toldo)
+     // this.verificar_existencia(this.toldo.nombre_toldo)
+     this.correcto = true
       this.error = false;
       this.procesando = false;
       this.toldo = {
@@ -163,7 +164,7 @@ export default {
     async verificar_existencia(nombre_toldo){
       try {
 
-        var link = "http://localhost:5000/precio/" + nombre_toldo
+        var link = "http://localhost:5000/toldo/" + nombre_toldo
         const response = await axios.get(link);
         console.log(response.data["Toldo"].length, "hokwdqio")
         if (response.data["Toldo"].length > 0){

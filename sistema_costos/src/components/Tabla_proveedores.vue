@@ -136,6 +136,19 @@ export default {
   },
   selected: "",
   nombre: "",
+    data() {
+    return {
+      editando: null,
+       buscador: "",
+      setTimeoutbuscador: "",
+      elementosPorPagina: 3,
+      datosPaginados: [],
+      paginaActual:1
+    };
+  },
+  mounted(){
+    this.getDataPagina(1);
+  },
   methods: {
     editarproducto(producto) {
       this.productoEditado = Object.assign({}, producto);
@@ -167,7 +180,7 @@ export default {
       return Math.ceil(this.productos.length / this.elementosPorPagina);
     },
     getDataPagina(noPagina) {
-      this.datosPaginados = noPagina;
+      this.paginaActual = noPagina;
       let ini = (noPagina * this.elementosPorPagina) - this.elementosPorPagina;
       let fin = (noPagina * this.elementosPorPagina);
       this.datosPaginados = this.productos.slice(ini, fin);
@@ -187,12 +200,7 @@ export default {
     },
 
     isActive(noPagina){
-      if(noPagina === this.PaginaActual){
-        return "active";
-      }
-      else{
-        return "";
-      }
+      return noPagina == this.paginaActual ? "active":""
     },
     limpiar_datos(){
       this.$emit('limpiar-datos')
@@ -200,19 +208,6 @@ export default {
       this.selected = ""
     }
     
-  },
-  data() {
-    return {
-      editando: null,
-       buscador: "",
-      setTimeoutbuscador: "",
-      elementosPorPagina: 3,
-      datosPaginados: [],
-      paginaActual:1
-    };
-  },
-  mounted(){
-    this.getDataPagina(1);
   },
 };
 </script>

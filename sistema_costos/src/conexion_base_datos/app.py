@@ -193,7 +193,22 @@ def buscar_precio(componentes):
         return precio_toldo
     except:
         return precio_toldo
-    
+
+
+
+@app.route('/toldo/<nombre_toldo>', methods=['GET'])
+def traer_toldo_exacto(nombre_toldo):
+    try:
+        cursor = conexion.connection.cursor()
+        sql = "SELECT toldos.id_toldo, toldos.nombre_toldo, toldos.id_producto, productos_proveedores.descripcion_producto, productos_proveedores.precio_unitario, toldos.cantidad, toldos.id_inc FROM toldos INNER JOIN productos_proveedores ON toldos.id_producto = productos_proveedores.id_producto WHERE toldos.nombre_toldo = '{0}';".format(nombre_toldo)
+        print(sql)
+        cursor.execute(sql)
+        datos = cursor.fetchall()
+        print(datos)
+        if datos != None:
+            return jsonify({"Toldo": datos, "mensaje": "existe"})
+    except Exception as ex:
+        return jsonify({'mensaje': "Error", 'exito': False})
 ### metodos get para sacar productos por proveedor y po nombre
 
 @app.route('/proveedor/<proveedor>', methods=['GET'])
